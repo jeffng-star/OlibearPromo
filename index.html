@@ -93,31 +93,31 @@ footer{padding:22px 0;font-size:.85rem;color:var(--muted);text-align:center}
     <div class="hero-grid">
       <div>
         <h1>Buy the retro fan at RM 74–82. Sell it at RM 109.</h1>
-        <p class="lead">The more fans you order, the lower your price. Beige and Green count together, and you can advertise a retro fan under RM 110 this Christmas.</p>
+        <p class="lead">The more fans you order, the lower your price. Beige and Green count together, and every order ships with a ready-made Christmas selling kit, so you can promote the fan as a Christmas gift.</p>
         <span class="deadline" id="deadline">Offer ends 25 December 2026</span>
       </div>
 
       <div class="calc" aria-labelledby="calc-title">
         <h2 id="calc-title">See how much you save</h2>
-        <p class="fine" style="margin-top:0">Fans, any mix of Beige and Green.</p>
+        <p class="fine" style="margin-top:0">Fans, any mix of Beige and Green. Order 10 or more and get free fans on top.</p>
         <label for="qty">How many fans?</label>
         <div class="qty-row">
           <input id="qty" type="number" min="1" max="500" value="20" inputmode="numeric">
           <input id="qtyRange" type="range" min="1" max="200" value="20" aria-label="Fan quantity slider">
         </div>
-        <label for="beige">How many of them are Beige?</label>
-        <div class="qty-row"><input id="beige" type="number" min="0" max="500" value="10" inputmode="numeric"></div>
+
         <div class="out" aria-live="polite">
           <div><span>Your price per fan</span><strong id="oDP"></strong></div>
           <div><span>Your fan order total</span><strong id="oTotal"></strong></div>
           <div><span>You save on fan price</span><strong id="oPer"></strong></div>
           <div><span id="lShav">2 free White shavers</span><strong id="oShav"></strong></div>
-          <div><span id="lBeige">Free Beige fans</span><strong id="oBeige"></strong></div>
+          <div><span id="lFree">Free fans</span><strong id="oFree"></strong></div>
+          <div><span>Christmas gift paper bags (free)</span><strong id="oBox"></strong></div>
           <div class="big"><span>Total value you get</span><span id="oProfit"></span></div>
         </div>
         <p class="profit-line" id="oProfitLine"></p>
         <div class="nudge" id="nudge"></div>
-        <p class="fine">Saving is compared with the normal price of RM 89 per fan. Free fans are valued at your price and free shavers at their RM 69 dealer price. Profit is before the free shavers.</p>
+        <p class="fine">Saving is compared with the normal price of RM 89 per fan. Free fans are valued at your price and free shavers at their RM 69 dealer price. Profit is before the free shavers. Gift bags are not counted in the value.</p>
       </div>
     </div>
   </div>
@@ -133,12 +133,27 @@ footer{padding:22px 0;font-size:.85rem;color:var(--muted);text-align:center}
       <div class="tier"><div class="range">20–49 fans</div><div class="price">RM 78</div><div class="earn">RM 31 profit per fan</div></div>
       <div class="tier best"><span class="tag">Best margin</span><div class="range">50+ fans</div><div class="price">RM 74</div><div class="earn">RM 35 profit per fan</div></div>
     </div>
-    <div class="card" style="margin-top:28px">
-      <h3>Add-ons</h3>
-      <ul class="ticks">
-        <li><strong>2 free White shavers</strong> with any order of 20 fans or more.</li>
-        <li><strong>Beige kicker:</strong> buy 10 Beige fans, get 1 Beige free.</li>
-      </ul>
+    <div class="split">
+      <div class="card">
+        <h3>Free goods on top of your price</h3>
+        <table>
+          <thead><tr><th>Fans in your order</th><th class="num">Free fans</th><th class="num">Free White shavers</th></tr></thead>
+          <tbody>
+            <tr><td>10–19</td><td class="num"><strong>1</strong></td><td class="num">None</td></tr>
+            <tr><td>20–39</td><td class="num"><strong>2</strong></td><td class="num"><strong>2</strong></td></tr>
+            <tr><td>40 and above</td><td class="num"><strong>4</strong></td><td class="num"><strong>2</strong></td></tr>
+          </tbody>
+        </table>
+        <p class="fine">Any colour mix on your order. The colour of the free fans is random.</p>
+      </div>
+      <div class="card">
+        <h3>Your ready-made Christmas selling kit</h3>
+        <ul class="ticks">
+          <li>We ship <strong>Christmas gift paper bags</strong> with your order, one for every fan, free fans included.</li>
+          <li>Hand each customer their fan in a gift bag, <strong>free</strong>. It is ready to give as a present.</li>
+          <li>Promote it as a Christmas gift offer: fan plus gift bag, no extra work for you.</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -230,31 +245,32 @@ const priceFor = q => tiers.find(t => q >= t[0])[1];
 const qty = document.getElementById("qty"), range = document.getElementById("qtyRange");
 function calc(q){
   q = Math.max(1, Math.min(500, parseInt(q) || 1));
-  const beigeIn = document.getElementById("beige");
-  const beige = Math.max(0, Math.min(q, parseInt(beigeIn.value) || 0));
   const dp = priceFor(q), total = q*dp, saved = q*(89-dp);
   const shavers = q>=20 ? 2 : 0, shavVal = shavers*69;
-  const freeB = Math.floor(beige/10), beigeVal = freeB*dp;
+  const freeB = q>=40 ? 4 : q>=20 ? 2 : q>=10 ? 1 : 0, beigeVal = freeB*dp;
   document.getElementById("oDP").textContent = rm(dp);
   document.getElementById("oTotal").textContent = rm(total);
   document.getElementById("oPer").textContent = rm(saved);
   document.getElementById("lShav").textContent = shavers ? "2 free White shavers" : "Free White shavers (order 20+ fans)";
   document.getElementById("oShav").textContent = shavers ? rm(shavVal) : "RM 0";
-  document.getElementById("lBeige").textContent = freeB ? freeB + " free Beige fan" + (freeB>1?"s":"") : "Free Beige fans (10 Beige = 1 free)";
-  document.getElementById("oBeige").textContent = freeB ? rm(beigeVal) : "RM 0";
+  document.getElementById("lFree").textContent = freeB ? freeB + " free fan" + (freeB>1?"s":"") + " (random colour)" : "Free fans (order 10+ fans)";
+  document.getElementById("oFree").textContent = freeB ? rm(beigeVal) : "RM 0";
+  document.getElementById("oBox").textContent = (q+freeB) + " bags";
   document.getElementById("oProfit").textContent = rm(saved + shavVal + beigeVal);
   document.getElementById("oProfitLine").textContent = "If you sell every fan at RM 109, your profit is " + rm((q+freeB)*SRP - total) + ".";
-  const next = [...tiers].reverse().find(t => t[0] > q);
+  const miles = [
+    [10, "to reach RM 82 each and get 1 free fan."],
+    [20, "to reach RM 78 each, get 2 free fans and 2 free White shavers."],
+    [40, "to get 4 free fans."],
+    [50, "to reach RM 74 each."]
+  ];
+  const nm = miles.find(m => m[0] > q);
   const nudge = document.getElementById("nudge");
-  if (next){
-    const more = next[0]-q;
-    nudge.textContent = "Add " + more + " more fan" + (more>1?"s":"") + " to reach " + rm(next[1]) + " each" + (next[0]===20 ? " and unlock 2 free White shavers." : ".");
-  } else {
-    nudge.textContent = "You are on our best price of " + rm(dp) + " per fan.";
-  }
+  nudge.textContent = nm
+    ? "Add " + (nm[0]-q) + " more fan" + ((nm[0]-q)>1?"s":"") + " " + nm[1]
+    : "You are on our best price of RM 74 per fan, with the full 4 free fans.";
 }
 qty.addEventListener("input", () => { range.value = Math.min(qty.value, 200); calc(qty.value); });
-document.getElementById("beige").addEventListener("input", () => calc(qty.value));
 range.addEventListener("input", () => { qty.value = range.value; calc(range.value); });
 calc(qty.value);
 
