@@ -114,9 +114,8 @@ footer{padding:22px 0;font-size:.85rem;color:var(--muted);text-align:center}
           <div><span id="lFree">Free fans</span><strong id="oFree"></strong></div>
           <div class="big"><span>Total value you get</span><span id="oProfit"></span></div>
         </div>
-        <p class="profit-line" id="oProfitLine"></p>
         <div class="nudge" id="nudge"></div>
-        <p class="fine">Saving is compared with the normal price of RM 89 per fan. Free fans are valued at your price and free shavers at their RM 69 dealer price. Profit is before the free shavers.</p>
+        <p class="fine">Saving is compared with the normal price of RM 89 per fan. Free fans are valued at your price and free shavers at their RM 69 dealer price.</p>
       </div>
     </div>
   </div>
@@ -127,10 +126,10 @@ footer{padding:22px 0;font-size:.85rem;color:var(--muted);text-align:center}
     <h2>Year-End Fan Deal</h2>
     <p class="lead">One price per fan, set by your total fans in a single order. Christmas selling price is RM 109 (usual price RM 129).</p>
     <div class="tiers">
-      <div class="tier"><div class="range">1–9 fans</div><div class="price">RM 89</div><div class="earn">Normal price<br>RM 20 profit per fan</div></div>
-      <div class="tier"><div class="range">10–19 fans</div><div class="price">RM 82</div><div class="earn">RM 27 profit per fan</div></div>
-      <div class="tier"><div class="range">20–49 fans</div><div class="price">RM 78</div><div class="earn">RM 31 profit per fan</div></div>
-      <div class="tier best"><span class="tag">Best margin</span><div class="range">50+ fans</div><div class="price">RM 74</div><div class="earn">RM 35 profit per fan</div></div>
+      <div class="tier"><div class="range">1–9 fans</div><div class="price">RM 89</div><div class="earn">Normal price<br>No discount</div></div>
+      <div class="tier"><div class="range">10–19 fans</div><div class="price">RM 82</div><div class="earn">You save RM 7 per fan</div></div>
+      <div class="tier"><div class="range">20–49 fans</div><div class="price">RM 78</div><div class="earn">You save RM 11 per fan</div></div>
+      <div class="tier best"><span class="tag">Best margin</span><div class="range">50+ fans</div><div class="price">RM 74</div><div class="earn">You save RM 15 per fan</div></div>
     </div>
     <div class="split" style="grid-template-columns:1fr">
       <div class="card">
@@ -247,7 +246,6 @@ function calc(q){
   document.getElementById("lFree").textContent = freeB ? freeB + " free fan" + (freeB>1?"s":"") + " (random colour)" : "Free fans (order 10+ fans)";
   document.getElementById("oFree").textContent = freeB ? rm(beigeVal) : "RM 0";
   document.getElementById("oProfit").textContent = rm(saved + shavVal + beigeVal);
-  document.getElementById("oProfitLine").textContent = "If you sell every fan at RM 109, your profit is " + rm((q+freeB)*SRP - total) + ".";
   const miles = [
     [10, "to reach RM 82 each and get 1 free fan."],
     [20, "to reach RM 78 each, get 2 free fans and 2 free White shavers."],
