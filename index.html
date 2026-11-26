@@ -31,6 +31,12 @@ section{padding:64px 0}
 .dot{width:14px;height:14px;border-radius:50%;background:var(--bulb);box-shadow:0 0 0 5px rgba(244,182,58,.25)}
 .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:start}
 .hero p.lead{color:#CFE0D6;margin-top:18px}
+.srp{display:inline-flex;align-items:baseline;gap:8px;margin:14px 0 0 0;border:2px solid var(--bulb);color:#fff;font-weight:700;padding:8px 14px;border-radius:6px}
+.srp b{font:800 1.5rem var(--head);color:var(--bulb)}
+.srp s{opacity:.7;font-weight:500}
+.srpbar{margin-top:20px;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;background:var(--pine);color:#fff;border-radius:10px;padding:14px 18px}
+.srpbar b{font:800 1.8rem var(--head);color:var(--bulb)}
+.srpbar s{opacity:.7}
 .deadline{display:inline-block;margin-top:24px;background:var(--bulb);color:var(--ink);font-weight:700;padding:8px 14px;border-radius:6px}
 
 .calc{background:var(--paper);color:var(--ink);border-radius:14px;padding:26px;box-shadow:0 18px 40px rgba(0,0,0,.25)}
@@ -94,12 +100,13 @@ footer{padding:22px 0;font-size:.85rem;color:var(--muted);text-align:center}
       <div>
         <h1>Buy the retro fan at RM 74–82. Sell it at RM 109.</h1>
         <p class="lead">The more fans you order, the lower your price. Beige and Green count together, and you can advertise a retro fan under RM 110 this Christmas.</p>
-        <span class="deadline" id="deadline">Offer ends 25 December 2026</span>
+        <span class="deadline" id="deadline">Offer ends 25 December 2026</span><br>
+        <span class="srp">Suggested selling price (SRP) <b>RM 109</b> <s>was RM 129</s></span>
       </div>
 
       <div class="calc" aria-labelledby="calc-title">
         <h2 id="calc-title">See how much you save</h2>
-        <p class="fine" style="margin-top:0">Fans, any mix of Beige and Green. Order 10 or more and get free fans on top.</p>
+        <p class="fine" style="margin-top:0">Fans, any mix of Beige and Green. Order 10 or more and get free fans on top. Suggested selling price: RM 109 per fan.</p>
         <label for="qty">How many fans?</label>
         <div class="qty-row">
           <input id="qty" type="number" min="1" max="500" value="20" inputmode="numeric">
@@ -124,7 +131,8 @@ footer{padding:22px 0;font-size:.85rem;color:var(--muted);text-align:center}
 <section>
   <div class="wrap">
     <h2>Year-End Fan Deal</h2>
-    <p class="lead">One price per fan, set by your total fans in a single order. Christmas selling price is RM 109 (usual price RM 129).</p>
+    <p class="lead">One price per fan, set by your total fans in a single order.</p>
+    <div class="srpbar"><span>Suggested selling price for every dealer, every tier:</span><b>RM 109</b><s>usual SRP RM 129</s></div>
     <div class="tiers">
       <div class="tier"><div class="range">1–9 fans</div><div class="price">RM 89</div><div class="earn">Normal price<br>No discount</div></div>
       <div class="tier"><div class="range">10–19 fans</div><div class="price">RM 82</div><div class="earn">You save RM 7 per fan</div></div>
@@ -160,7 +168,7 @@ footer{padding:22px 0;font-size:.85rem;color:var(--muted);text-align:center}
         <table>
           <thead><tr><th>Fans sold</th><th class="num">Rebate per fan</th><th class="num">Your cost becomes</th></tr></thead>
           <tbody>
-            <tr><td>1–9</td><td class="num">None</td><td class="num">RM 89</td></tr>
+            <tr><td>1–9</td><td class="num"><strong>RM 4</strong></td><td class="num">RM 85</td></tr>
             <tr><td>10–19</td><td class="num"><strong>RM 7</strong></td><td class="num">RM 82</td></tr>
             <tr><td>20–49</td><td class="num"><strong>RM 11</strong></td><td class="num">RM 78</td></tr>
             <tr><td>50+</td><td class="num"><strong>RM 15</strong></td><td class="num">RM 74</td></tr>
@@ -188,7 +196,7 @@ footer{padding:22px 0;font-size:.85rem;color:var(--muted);text-align:center}
         <li>Covers fans bought from us <strong>before the campaign started</strong>, up to the stock you hold on the campaign start date. Send us your count on day one. Fans bought under the Year-End Fan Deal already carry the promo price.</li>
         <li>Once you reach a tier, the rebate applies to <strong>every</strong> eligible fan you sold in the campaign, not just the extra ones.</li>
         <li>Sell at RM 109 or lower. Fans sold above RM 109 do not qualify.</li>
-        <li>Send one claim with proof of sale after the campaign closes. We issue one credit note per dealer.</li>
+        <li>Send one claim with proof of sale after the campaign closes. We issue one credit note per dealer. Rebates under RM 50 are settled by deducting them from your next invoice.</li>
       </ul>
     </div>
   </div>
@@ -263,14 +271,14 @@ range.addEventListener("input", () => { qty.value = range.value; calc(range.valu
 calc(qty.value);
 
 // rebate calculator
-const fanReb = q => q>=50?15 : q>=20?11 : q>=10?7 : 0;
+const fanReb = q => q>=50?15 : q>=20?11 : q>=10?7 : q>=1?4 : 0;
 function rebate(){
   const f = Math.max(0, parseInt(document.getElementById("rbFans").value)||0);
   const r = fanReb(f);
   document.getElementById("rbPer").textContent = r ? rm(r) : "None";
   document.getElementById("rbMargin").textContent = rm(89-r);
   document.getElementById("rbTotal").textContent = rm(f*r);
-  const nf = [[10,7],[20,11],[50,15]].find(t=>t[0]>f);
+  const nf = [[1,4],[10,7],[20,11],[50,15]].find(t=>t[0]>f);
   document.getElementById("rbNudge").textContent = nf
     ? "Sell " + (nf[0]-f) + " more fan" + ((nf[0]-f)>1?"s":"") + " to lift your rebate to RM " + nf[1] + " per fan."
     : "You are on the top rebate of RM 15 per fan.";
